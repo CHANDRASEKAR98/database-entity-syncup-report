@@ -1,0 +1,6 @@
+Column Name,Column DataType,Column Length,Is Nullable,  ,Field Name,Field DataType,Field Length,Is Nullable
+contact_no,VARCHAR,255,true,  ,CONTACT_NO,String,255,true
+customer_id,BIGINT,19,true,  ,CUSTOMER_ID,long,255,false
+email_id,VARCHAR,255,true,  ,EMAIL_ID,String,255,true
+first_name,VARCHAR,255,true,  ,FIRST_NAME,String,255,true
+last_name,VARCHAR,255,true,  ,LAST_NAME,String,255,true
