@@ -11,13 +11,16 @@ import com.client.database.entity.syncup.report.util.DatabaseSyncUtil;
 import com.client.database.entity.syncup.report.util.EntitySqlProcessUtil;
 import com.client.database.entity.syncup.report.util.EntitySyncUtil;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +30,7 @@ import lombok.extern.log4j.Log4j2;
  * 
  * @author chandrasekar B
  * 
- * <p>This class contains the core business logic for the report generation for the table.
+ * <p>This class contains the core business logic for the report generation for the table.</p>
  *
  */
 @Service
@@ -110,6 +113,34 @@ public class DatabaseEntitySyncReportGeneratorService {
 			throw new DatabaseEntitySyncupReportException(
 					DatabaseEntitySyncupReportEnum.UNEXPECTED_ERROR_DURING_DB_ENTITY_SYNCUP, exception);
 		}
+	}
+	
+	/**
+	 * generateListOfTableEntitySyncReport method will generate the sync report for the list of tables.
+	 * 
+	 * @param tableNameList
+	 * @return
+	 */
+	public String generateListOfTableEntitySyncReport(List<String> tableNameList) {
+		AtomicInteger reportCount = new AtomicInteger(0);
+		try {
+			File filePath = new File(outputReportPath);
+			if (filePath.isDirectory()) {
+				FileUtils.cleanDirectory(new File(outputReportPath));
+			}
+			tableNameList.stream().forEach(tableName -> {
+				generateReportAsCSVForSpecificTable(tableName);
+				reportCount.getAndIncrement();
+			});
+			if (reportCount.get() == tableNameList.size()) {
+				return csvProcessUtil.mergeCsvFiles() ? MessageContants.ALL_TABLE_ENTITY_SYNCUP_REPORT_SUCCESS_MESSAGE 
+						: MessageContants.ALL_TABLE_ENTITY_SYNCUP_REPORT_FAILURE_MESSAGE;
+			}
+		} catch (Exception exception) {
+			log.error("Error occured during Database Syncup report generation: ", exception);
+			throw new DatabaseEntitySyncupReportException(DatabaseEntitySyncupReportEnum.UNEXPECTED_ERROR_DURING_DB_ENTITY_SYNCUP, exception);
+		}
+		return MessageContants.ALL_TABLE_ENTITY_SYNCUP_REPORT_FAILURE_MESSAGE;
 	}
 
 }

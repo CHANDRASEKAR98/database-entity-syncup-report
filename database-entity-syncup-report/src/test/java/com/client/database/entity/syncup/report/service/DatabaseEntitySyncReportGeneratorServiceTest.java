@@ -96,5 +96,39 @@ public class DatabaseEntitySyncReportGeneratorServiceTest extends DatabaseSyncBa
 		assertNotNull(actualException);
 		assertEquals(UNEXPECTED_ERROR_DURING_DB_ENTITY_SYNCUP, actualException.getDatabaseEntitySyncupReportEnum());
 	}
+	
+	@Test
+	public void generateListOfTableEntitySyncReportSuccessTest() throws SQLException, IOException {
+		when(databaseSyncUtil.getTableMetadata(anyString())).thenReturn(databaseSyncList());
+		when(entitySqlProcessUtil.getTableSqlQuery(anyString())).thenReturn(DUMMY_DATA);
+		when(entitySqlProcessUtil.getEntityClassObject(anyString())).thenReturn(new ExampleEntity());
+		when(entitySyncUtil.getEntityFieldMetaData(any(Object.class))).thenReturn(entitySyncList());
+		when(csvProcessUtil.convertDataListToCSV(anyList(), anyString(), anyInt())).thenReturn(Boolean.TRUE);
+		when(csvProcessUtil.mergeCsvFiles()).thenReturn(Boolean.TRUE);
+		String actualResponse = databaseEntitySyncReportGenService.generateListOfTableEntitySyncReport(tableNameDataList());
+		assertEquals(ALL_TABLE_ENTITY_SYNCUP_REPORT_SUCCESS_MESSAGE, actualResponse);
+	}
+	
+	@Test
+	public void generateListOfTableEntitySyncReportFailureTest() throws SQLException, IOException {
+		when(databaseSyncUtil.getTableMetadata(anyString())).thenReturn(databaseSyncList());
+		when(entitySqlProcessUtil.getTableSqlQuery(anyString())).thenReturn(DUMMY_DATA);
+		when(entitySqlProcessUtil.getEntityClassObject(anyString())).thenReturn(new ExampleEntity());
+		when(entitySyncUtil.getEntityFieldMetaData(any(Object.class))).thenReturn(entitySyncList());
+		when(csvProcessUtil.convertDataListToCSV(anyList(), anyString(), anyInt())).thenReturn(Boolean.FALSE);
+		when(csvProcessUtil.mergeCsvFiles()).thenReturn(Boolean.FALSE);
+		String actualResponse = databaseEntitySyncReportGenService.generateListOfTableEntitySyncReport(tableNameDataList());
+		assertEquals(ALL_TABLE_ENTITY_SYNCUP_REPORT_FAILURE_MESSAGE, actualResponse);
+	}
+	
+	@Test
+	public void generateListOfTableEntitySyncReportExceptionTest() throws SQLException, IOException {
+		when(databaseSyncUtil.getTableMetadata(anyString())).thenThrow(new DatabaseEntitySyncupReportException(UNEXPECTED_ERROR_DURING_DB_ENTITY_SYNCUP));
+		when(entitySqlProcessUtil.getTableSqlQuery(anyString())).thenReturn(DUMMY_DATA);
+		DatabaseEntitySyncupReportException actualException = assertThrows(DatabaseEntitySyncupReportException.class, 
+				() -> databaseEntitySyncReportGenService.generateListOfTableEntitySyncReport(tableNameDataList()));
+		assertNotNull(actualException);
+		assertEquals(UNEXPECTED_ERROR_DURING_DB_ENTITY_SYNCUP, actualException.getDatabaseEntitySyncupReportEnum());
+	}
 
 }

@@ -13,6 +13,10 @@ public class DatabaseSyncBase {
 
 	protected static final String TABLE_ENTITY_SYNCUP_REPORT_FAILURE_MESSAGE = "Table Entity Syncup report not generated";
 	
+	protected static final String ALL_TABLE_ENTITY_SYNCUP_REPORT_SUCCESS_MESSAGE = "All Table Entity Syncup report generated successfully.";
+	
+	protected static final String ALL_TABLE_ENTITY_SYNCUP_REPORT_FAILURE_MESSAGE = "Table Entity Syncup report not generated";
+	
 	protected static final String ENTITY_CLASS_NOT_AVAILABLE_FOR_TABLE = "Entity class not available for this table";
 	
 	protected static final String UNEXPECTED_ERROR_DURING_DB_ENTITY_SYNCUP_MSG = "Unexpected error has occured during Database-Entity syncup report generation";

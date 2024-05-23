@@ -4,7 +4,7 @@ package com.client.database.entity.syncup.report.constants;
  * 
  * @author chandrasekar B
  * 
- * <p>This class contain the table name and sql queries.
+ * <p>This class contain the table name and sql queries.</p>
  *
  */
 public class TableConstants {
