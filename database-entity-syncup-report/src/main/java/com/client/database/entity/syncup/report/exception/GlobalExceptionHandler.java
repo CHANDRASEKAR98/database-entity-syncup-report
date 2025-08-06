@@ -5,6 +5,7 @@ import com.client.database.entity.syncup.report.dto.exception.DatabaseSyncUpErro
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public class GlobalExceptionHandler {
 	 * @param exception
 	 * @return
 	 */
+        @ExceptionHanlder(class=DatabaseEntitySyncupReportException.class)
 	ResponseEntity<DatabaseSyncUpError> handleDatabaseEntitySyncupReportException(DatabaseEntitySyncupReportException exception) {
 		log.error("DatabaseEntitySyncupReportException occured, ", exception);
 		ResponseEntity<DatabaseSyncUpError> responseEntity;
@@ -42,6 +44,7 @@ public class GlobalExceptionHandler {
 	 * @param exception
 	 * @return
 	 */
+	@ExceptionHanlder(class=Exception.class)
 	ResponseEntity<DatabaseSyncUpError> handleGenericException(Exception exception) {
 		log.error("DatabaseEntitySyncupReportException occured, ", exception);
 		ResponseEntity<DatabaseSyncUpError> responseEntity;
