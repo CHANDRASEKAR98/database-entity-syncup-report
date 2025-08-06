@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
 	 * @param exception
 	 * @return
 	 */
-        @ExceptionHanlder(class=DatabaseEntitySyncupReportException.class)
+        @ExceptionHandler(exception=DatabaseEntitySyncupReportException.class)
 	ResponseEntity<DatabaseSyncUpError> handleDatabaseEntitySyncupReportException(DatabaseEntitySyncupReportException exception) {
 		log.error("DatabaseEntitySyncupReportException occured, ", exception);
 		ResponseEntity<DatabaseSyncUpError> responseEntity;
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 	 * @param exception
 	 * @return
 	 */
-	@ExceptionHanlder(class=Exception.class)
+	@ExceptionHandler(exception=Exception.class)
 	ResponseEntity<DatabaseSyncUpError> handleGenericException(Exception exception) {
 		log.error("DatabaseEntitySyncupReportException occured, ", exception);
 		ResponseEntity<DatabaseSyncUpError> responseEntity;
